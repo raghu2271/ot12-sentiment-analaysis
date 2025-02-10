@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Sentiment Analysis - Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Black background */
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Glowing Particles */
+        .glitter {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: glitterAnimation 5s infinite ease-in-out alternate;
+        }
+
+        @keyframes glitterAnimation {
+            0% { transform: scale(1) translateY(0); opacity: 0.8; }
+            100% { transform: scale(1.5) translateY(-50px); opacity: 0.3; }
+        }
+
+        /* Login Box */
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8);
+            text-align: center;
+            width: 300px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .login-container h2 {
+            color: #00c8ff;
+            text-shadow: 0px 0px 10px #00c8ff;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            background-color: #ff007b;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0px 0px 10px #ff007b;
+        }
+
+        .login-button:hover {
+            background-color: #ff3399;
+            transform: scale(1.1);
+        }
+
+        /* Predict Sentiment Button */
+        .predict-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .predict-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #00ffcc;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0px 0px 10px #00ffcc;
+        }
+
+        .predict-button:hover {
+            background-color: #00ffaa;
+            transform: scale(1.1);
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container" id="loginBox">
+        <h2>Airline Sentiment Analysis</h2>
+        <input type="text" class="input-field" id="username" placeholder="Enter Username">
+        <input type="password" class="input-field" id="password" placeholder="Enter Password">
+        <button class="login-button" onclick="validateLogin()">Login</button>
+    </div>
+
+    <div class="predict-container" id="predictBox">
+        <h2>Welcome! Ready to Analyze Sentiments?</h2>
+        <button class="predict-button" onclick="redirectToPredict()">Predict Sentiment</button>
+    </div>
+
+    <script>
+        // Function to validate login and show the next step
+        function validateLogin() {
+            let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+
+            if (username && password) {
+                document.getElementById("loginBox").style.display = "none";
+                document.getElementById("predictBox").style.display = "block";
+            } else {
+                alert("Please enter valid login details!");
+            }
+        }
+
+        // Redirect to /predict page
+        function redirectToPredict() {
+            window.location.href = "/predict";
+        }
+
+        // Generate random glitter effects
+        function createGlitter() {
+            for (let i = 0; i < 50; i++) { // Adjust number of glitters
+                let glitter = document.createElement("div");
+                glitter.className = "glitter";
+                document.body.appendChild(glitter);
+
+                let size = Math.random() * 4 + 2; // Random size
+                glitter.style.width = `${size}px`;
+                glitter.style.height = `${size}px`;
+                glitter.style.background = `hsl(${Math.random() * 360}, 100%, 75%)`; // Random color
+                
+                glitter.style.left = `${Math.random() * 100}vw`;
+                glitter.style.top = `${Math.random() * 100}vh`;
+                glitter.style.animationDuration = `${Math.random() * 5 + 3}s`; // Random speed
+            }
+        }
+        createGlitter();
+    </script>
+
+</body>
+</html>
