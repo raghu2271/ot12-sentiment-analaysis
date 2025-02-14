@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from test import TextToNum
 import pickle
 
-app = Flask(__name__)  # Fixed _name_ to __name__
+app = Flask(__name__)
 
 @app.route("/")
 def home():
@@ -11,43 +11,38 @@ def home():
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
     if request.method == "POST":
-        msg = request.form.get("message")  # Use .get() to avoid errors if key is missing
-        if not msg:
-            return jsonify({"error": "No message provided"}), 400  # Return an error if input is missing
-        
-        print("Received message:", msg)
+        msg = request.form.get("message")
+        print(f"Received message: {msg}")
 
-        # Process text using TextToNum class
+        # Create instance of TextToNum class and process message
         cl = TextToNum(msg)
-        cl.cleaner()  
-        cl.token()  
-        cl.removeStop()  
-        st = cl.stemme()  
+        cl.cleaner()  # Clean the text
+        cl.token()  # Tokenize the text
+        cl.removeStop()  # Remove stopwords
+        st = cl.stemme()  # Stem words (ensure this method returns a list)
 
-        # Join processed words into a string
+        # Join the stemmed words into a single string
         stvc = " ".join(st)
 
-        try:
-            # Load vectorizer
-            with open("vectorizer.pickle", "rb") as vc_file:
-                vectorizer = pickle.load(vc_file)
+        # Load vectorizer
+        with open("vectorizer.pickle", "rb") as vc_file:
+            vectorizer = pickle.load(vc_file)
 
-            dt = vectorizer.transform([stvc]).toarray()  # Transform text
+        # Transform the text input
+        dt = vectorizer.transform([stvc]).toarray()
 
-            # Load model
-            with open("model.pickle", "rb") as mb_file:
-                model = pickle.load(mb_file)
+        # Load model
+        with open("model.pickle", "rb") as mb_file:
+            model = pickle.load(mb_file)
 
-            # Make prediction
-            pred = model.predict(dt)
-            print("Prediction:", pred)
+        # Make prediction
+        pred = model.predict(dt)[0]
+        prediction_label = "Positive" if pred == 1 else "Neutral" if pred == 0 else "Negative"
 
-            return jsonify({"prediction": str(pred[0])})
-        
-        except Exception as e:
-            return jsonify({"error": str(e)}), 500  # Handle errors properly
-    
+        # Return the prediction in an HTML template
+        return render_template("result.html", prediction=prediction_label)
+
     return render_template("predict.html")
 
-if __name__ == "__main__":  # Fixed condition
-    app.run(host="0.0.0.0", port=5050)
+if __name__ == "__main__":  # Corrected the main condition
+    app.run(host="0.0.0.0", port=5050, debug=True)
