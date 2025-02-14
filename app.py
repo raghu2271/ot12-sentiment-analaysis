@@ -35,10 +35,18 @@ def predict():
         
         # Make prediction
         pred = model.predict(dt)
-        print(pred)
+        if pred[0]==1:
+            pred="positive"
+        elif pred[0]==0:
+            pred="Neutral"
+        else:
+            pred="Negative"
+            
+        #print(pred)
         
         # Return the prediction as JSON
-        return jsonify({"prediction": str(pred[0])})
+        #return jsonify({"prediction": str(pred[0])})
+        return render_template("result.html", prediction=pred)
     
     return render_template("predict.html")
 
