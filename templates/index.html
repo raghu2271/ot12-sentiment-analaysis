@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis</title>
+    <title>Airline Sentiment Analysis</title>
     <style>
+        @keyframes glitter {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            background-color: #121212;
+            background: radial-gradient(circle, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: glitter 8s infinite alternate ease-in-out;
             color: #fff;
             font-family: Arial, sans-serif;
             display: flex;
@@ -14,41 +22,96 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
+            position: relative;
         }
+
         .container {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            background: rgba(20, 20, 50, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.6);
             text-align: center;
-            width: 350px;
-            animation: fadeIn 1s ease-in-out;
+            width: 360px;
+            position: relative;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        h2 {
+            text-shadow: 0px 0px 12px rgba(0, 150, 255, 0.8);
+            font-size: 26px;
         }
+
         button {
-            background: #ff4081;
-            color: #fff;
+            background: linear-gradient(45deg, #007bff, #00ffff);
+            color: white;
             border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            border-radius: 5px;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            transition: 0.3s;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.8);
         }
+
         button:hover {
-            background: #e73370;
+            background: linear-gradient(45deg, #005eff, #00ffff);
             transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 150, 255, 1);
+        }
+
+        /* Airplane Animation */
+        @keyframes fly {
+            0% { left: -10%; top: 10%; }
+            50% { left: 50%; top: 30%; }
+            100% { left: 110%; top: 10%; }
+        }
+
+        .airplane {
+            position: absolute;
+            font-size: 2rem;
+            animation: fly 10s infinite linear;
+        }
+
+        /* Floating Clouds */
+        @keyframes float {
+            0% { opacity: 0.7; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-10px); }
+            100% { opacity: 0.7; transform: translateY(0); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            width: 100px;
+            height: 50px;
+            border-radius: 50px;
+            animation: float 6s infinite ease-in-out alternate;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Sentiment Analysis</h2>
+        <h2>✈ Airline Sentiment Analysis ✈</h2>
         <button onclick="window.location.href='/predict'">Predict Sentiment</button>
     </div>
+
+    <!-- Airplane Animation -->
+    <div class="airplane">✈</div>
+
+    <!-- Floating Clouds -->
+    <script>
+        function createClouds() {
+            for (let i = 0; i < 5; i++) {
+                let cloud = document.createElement('div');
+                cloud.classList.add('cloud');
+                cloud.style.top = Math.random() * window.innerHeight + "px";
+                cloud.style.left = Math.random() * window.innerWidth + "px";
+                cloud.style.animationDuration = (Math.random() * 3 + 3) + "s";
+                document.body.appendChild(cloud);
+            }
+        }
+        createClouds();
+    </script>
 </body>
 </html>
